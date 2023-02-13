@@ -34,73 +34,127 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        reverse: true,
-        child: Expanded(
-          child: Container(
-              width: w,
-              child: FutureBuilder<List>(
-                future: fetchnews(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Expanded(
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 50,
-                                  alignment: Alignment.centerLeft,
-                                  child: Card(
-                                    child: Image.network(
-                                        snapshot.data![index]["urlToImage"]),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        snapshot.data![index]['author']
-                                            .toString(),
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      Text(
-                                        snapshot.data![index]['title']
-                                            .toString(),
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      Text(
-                                        snapshot.data![index]['description']
-                                            .toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
+//       body: SingleChildScrollView(
+//         scrollDirection: Axis.vertical,
+//         physics: BouncingScrollPhysics(),
+//         reverse: true,
+//         child: Container(
+//             width: w,
+//             child: FutureBuilder<List>(
+//               future: fetchnews(),
+//               builder: (context, snapshot) {
+//                 if (snapshot.hasData) {
+//                   return SingleChildScrollView(
+//                     physics: BouncingScrollPhysics(),
+//                     child: Expanded(
+//                       child: ListView.builder(
+//                         shrinkWrap: true,
+//                         itemCount: snapshot.data!.length,
+//                         itemBuilder: (BuildContext context, int index) {
+//                           return Expanded(
+//                             child: Row(
+//                               children: [
+//                                 Container(
+//                                   height: 50,
+//                                   alignment: Alignment.centerLeft,
+//                                   child: Card(
+//                                     child: Image.network(
+//                                         snapshot.data![index]["urlToImage"]),
+//                                   ),
+//                                 ),
+      //       Column(
+      //         children: [
+      //           Expanded(
+      //             child: Text(
+      //               snapshot.data![index]['author']
+      //                   .toString(),
+      //               style: TextStyle(color: Colors.black),
+      //             ),
+      //           ),
+      //           Text(
+      //             snapshot.data![index]['title'].toString(),
+      //             style: TextStyle(color: Colors.black),
+      //           ),
+      //           Text(
+      //             snapshot.data![index]['description']
+      //                 .toString(),
+      //             overflow: TextOverflow.ellipsis,
+      //             style: TextStyle(color: Colors.black),
+      //           ),
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // );
+//                         },
+//                       ),
+//                     ),
+//                   );
+//                 } else if (snapshot.hasError) {
+//                   return Text("${snapshot.error}");
+//                 }
 
-                  // By default, show a loading spinner.
-                  return Center(
-                      child: CircularProgressIndicator(
-                    color: Colors.black,
-                  ));
-                },
-              )),
-        ),
+//                 // By default, show a loading spinner.
+//       return Center(
+//                     child: CircularProgressIndicator(
+//                   color: Colors.black,
+//                 ));
+//               },
+//             )),
+//       ),
+      body: FutureBuilder<List>(
+        future: fetchnews(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          height: 50,
+                          alignment: Alignment.centerLeft,
+                          child: Card(
+                            child: Image.network(
+                                snapshot.data![index]["urlToImage"]),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Text(
+                              snapshot.data![index]['author'].toString(),
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              snapshot.data![index]['title'].toString(),
+                              style: TextStyle(color: Colors.black),
+                              softWrap: kFlutterMemoryAllocationsEnabled,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
