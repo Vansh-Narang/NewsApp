@@ -108,6 +108,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             return ListView.builder(
               shrinkWrap: true,
+              itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 return Row(
                   children: [
